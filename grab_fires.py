@@ -127,7 +127,7 @@ def calcScarArea(bb, cloud_thresh = 0, drop_thresh = -0.15, scale = 5):
 
     # Authenticate earth engine credentials
     geeAuth()
-    
+
     # Location of fires after June 1, 2013, stored in fusion tables
     firetable = 'ft:1MH_YS3OsKJwhHLEh9grct2Xz4_dpYfcm_uEgt_0'
 
@@ -159,7 +159,7 @@ def calcScarArea(bb, cloud_thresh = 0, drop_thresh = -0.15, scale = 5):
     sum_reducer = ee.call("Reducer.sum")
     summ = final_area.reduceRegion(sum_reducer, polygon, scale).getInfo()
     ha = summ['nd'] * 25 / 10000
-    
+    print ha
     return ha
 
 # Constants to indicate rough bounding box of areas
@@ -235,7 +235,6 @@ def mk_tile_bboxes(ul, lr, n=600, l=None):
     
     for xi in range(get_x_tiles(ul, lr, d)):
         for yi in range(get_y_tiles(ul, lr, d)):
-            
             # calculate x & y of tile centroid
             x = get_x(ul, d, xi)
             y = get_y(ul, d, yi)
@@ -251,7 +250,4 @@ def mk_tile_bboxes(ul, lr, n=600, l=None):
 
 def finalScars():
     # Calculate the total area of the scars
-    x = map(calcScarArea, mk_tile_bboxes(UL, LR))
-    return sum(x)
-
-
+    return map(calcScarArea, mk_tile_bboxes(UL, LR))
